@@ -17,10 +17,10 @@ jobs:
         with:
           node-version: 18
           cache: <%= locals.npm || 'yarn' %>
-      - run: <%= locals.npm || 'yarn' %> install
+      - run: <%= locals.npm || 'yarn' %> install && <%= locals.npm || 'yarn' %> build
       - name: Deploy
         uses: cloudflare/wrangler-action@3.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: <%= locals.npm || 'yarn' %> pages:deploy
+          command: pages deploy --project-name '<%= name %>' '<%= locals.dir || "dist" %>'
